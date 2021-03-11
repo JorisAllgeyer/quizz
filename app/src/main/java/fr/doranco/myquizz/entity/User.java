@@ -2,34 +2,36 @@ package fr.doranco.myquizz.entity;
 
 public class User {
 
-    private String mName;
-    private Integer mScore;
+    private String name;
+    private Integer score;
 
-    public User(String mName) {
-        this.mName = mName;
+    public User() {}
+
+    public User(String name) {
+        this.name = name;
     }
 
-    public String getmName() {
-        return mName;
+    public String getName() {
+        return name;
     }
 
-    public void setmName(String mName) {
-        this.mName = mName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Integer getmScore() {
-        return mScore;
+    public Integer getScore() {
+        return score;
     }
 
-    public void setmScore(Integer mScore) {
-        this.mScore = mScore;
+    public void setScore(Integer score) {
+        this.score = score;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "mName='" + mName + '\'' +
-                ", mScore=" + mScore +
+                "mName='" + name + '\'' +
+                ", mScore=" + score +
                 '}';
     }
 }

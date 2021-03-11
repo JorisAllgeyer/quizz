@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements IConst {
             sb.append("Bonjour ").append(userName).append(", votre dernier score: ").append(score);
 
             tvTitle.setText(sb.toString());
+            etName.setText(userName);
         }
     }
 

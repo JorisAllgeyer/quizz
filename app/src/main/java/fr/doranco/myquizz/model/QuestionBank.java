@@ -15,7 +15,7 @@ public class QuestionBank {
         nextQuestionIndex = 0;
     }
 
-    public Question getQuestion() {
+    public Question getNextQuestion() {
 
         if (nextQuestionIndex == questionList.size()) {
             nextQuestionIndex = 0;

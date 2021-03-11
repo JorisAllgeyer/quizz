@@ -6,12 +6,12 @@ public class Question {
 
     private String question;
     private List<String> choiceList;
-    private int answerIndex;
+    private int correctAnswerIndex;
 
     public Question(String question, List<String> choiceList, int answerIndex) {
         this.question = question;
         this.choiceList = choiceList;
-        this.answerIndex = answerIndex;
+        this.correctAnswerIndex = answerIndex;
     }
 
     public String getQuestion() {
@@ -22,11 +22,8 @@ public class Question {
         return choiceList;
     }
 
-    public int getAnswerIndex() {
-        return answerIndex;
+    public int getCorrectAnswerIndex() {
+        return correctAnswerIndex;
     }
 
-    public void setAnswerIndex(int answerIndex) {
-        this.answerIndex = answerIndex;
-    }
 }

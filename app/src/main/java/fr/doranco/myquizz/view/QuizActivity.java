@@ -18,6 +18,7 @@ import java.util.Arrays;
 
 import fr.doranco.myquizz.model.Question;
 import fr.doranco.myquizz.model.QuestionBank;
+import fr.doranco.myquizz.service.MusicService;
 
 public class QuizActivity extends AppCompatActivity implements IConst, View.OnClickListener {
 
@@ -68,6 +69,10 @@ public class QuizActivity extends AppCompatActivity implements IConst, View.OnCl
         btnAnswer4.setOnClickListener(this);
 
         this.displayCurrentQuestion(currentQuestion);
+
+        // Play Music
+        Intent intent = new Intent(QuizActivity.this, MusicService.class);
+        startService(intent);
     }
 
     private void displayCurrentQuestion(Question currentQuestion) {
@@ -105,7 +110,7 @@ public class QuizActivity extends AppCompatActivity implements IConst, View.OnCl
     }
 
     private void endQuiz() {
-        // TODO
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Quiz terminé")
                 .setMessage("Votre score est de: " + score + "/" + maxQuestions)
@@ -120,6 +125,10 @@ public class QuizActivity extends AppCompatActivity implements IConst, View.OnCl
                 })
                 .create()
                 .show();
+
+        // Stop Music
+        Intent intent = new Intent(QuizActivity.this, MusicService.class);
+        stopService(intent);
     }
 
     @Override

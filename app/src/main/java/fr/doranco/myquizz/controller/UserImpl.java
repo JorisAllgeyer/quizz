@@ -32,9 +32,6 @@ public class UserImpl implements IUser {
                     user.setName(name);
                     user.setScore(score);
 
-                    System.out.println("user");
-                    System.out.println(user);
-
                     listUsers.add(user);
 
                     // Move to next

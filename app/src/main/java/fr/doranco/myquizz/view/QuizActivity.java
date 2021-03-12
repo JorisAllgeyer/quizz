@@ -8,13 +8,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.Arrays;
 
 import fr.doranco.myquizz.model.Question;
 import fr.doranco.myquizz.model.QuestionBank;
@@ -24,9 +21,10 @@ public class QuizActivity extends AppCompatActivity implements IConst, View.OnCl
 
     private static final String TAG = QuizActivity.class.getSimpleName();
 
+    // Elements
     private TextView tvQuestion;
     private Button btnAnswer1, btnAnswer2, btnAnswer3, btnAnswer4;
-
+    // Questions
     private QuestionBank questionBank;
     private Question currentQuestion;
     private int maxQuestions;
@@ -42,6 +40,7 @@ public class QuizActivity extends AppCompatActivity implements IConst, View.OnCl
         questionBank = QuestionBank.generateQuestions();
         maxQuestions = 4;
 
+        // Mobile has been rotated
         if (savedInstanceState != null) {
             score = savedInstanceState.getInt(STATE_SCORE);
             questionAsked = savedInstanceState.getInt(STATE_QUESTION);
@@ -52,6 +51,7 @@ public class QuizActivity extends AppCompatActivity implements IConst, View.OnCl
             currentQuestion = questionBank.getNextQuestion();
         }
 
+        // Elements
         tvQuestion = findViewById(R.id.tvQuestion);
         btnAnswer1 = findViewById(R.id.btnA1);
         btnAnswer2 = findViewById(R.id.btnA2);
@@ -70,7 +70,7 @@ public class QuizActivity extends AppCompatActivity implements IConst, View.OnCl
 
         this.displayCurrentQuestion(currentQuestion);
 
-        // Play Music
+        // START MUSIC
         Intent intent = new Intent(QuizActivity.this, MusicService.class);
         startService(intent);
     }
@@ -95,6 +95,7 @@ public class QuizActivity extends AppCompatActivity implements IConst, View.OnCl
             Toast.makeText(QuizActivity.this, "Mauvaise réponse !", Toast.LENGTH_SHORT).show();
         }
 
+        // SLEEP 2 SEC
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -110,7 +111,7 @@ public class QuizActivity extends AppCompatActivity implements IConst, View.OnCl
     }
 
     private void endQuiz() {
-
+        // END QUIZ AND DISPLAY SCORE
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Quiz terminé")
                 .setMessage("Votre score est de: " + score + "/" + maxQuestions)
@@ -126,7 +127,7 @@ public class QuizActivity extends AppCompatActivity implements IConst, View.OnCl
                 .create()
                 .show();
 
-        // Stop Music
+        // STOP MUSIC
         Intent intent = new Intent(QuizActivity.this, MusicService.class);
         stopService(intent);
     }
@@ -138,5 +139,4 @@ public class QuizActivity extends AppCompatActivity implements IConst, View.OnCl
         outState.putSerializable(STATE_CURRENT_QUESTION, currentQuestion);
         super.onSaveInstanceState(outState);
     }
-
 }

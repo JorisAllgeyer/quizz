@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements IConst {
     private EditText etName;
     private Button btnStart;
     private User user;
+    private IUser userImpl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +45,9 @@ public class MainActivity extends AppCompatActivity implements IConst {
         // Disable btnStart
         btnStart.setEnabled(false);
         user = new User();
+
+        // Control
+        userImpl = new UserImpl();
 
         etName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -69,27 +71,24 @@ public class MainActivity extends AppCompatActivity implements IConst {
     @Override
     protected void onStart() {
         super.onStart();
-
+        // 
         tvTitle.setText("Bonjour, veuillez saisir votre nom:");
-
         displayScores();
     }
 
     public void onClickStart(View v) {
         String userName = etName.getText().toString();
-
-        IUser userImpl = new UserImpl();
+        // GET USER BY NAME
         user = userImpl.getUserByName(this, userName);
 
         if (user != null) {
             // User exists
-
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Cet utilisateur existe déjà, voulez-vous jouer avec ce profil ?")
                     .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            // Play with existing user
+                            // START GAME
                             Intent intentQuizActivity = new Intent(MainActivity.this, QuizActivity.class);
                             startActivityForResult(intentQuizActivity, REQUEST_CODE);
                         }
@@ -104,19 +103,19 @@ public class MainActivity extends AppCompatActivity implements IConst {
                     .show();
 
         } else {
-            // New User
+            // User is new, CREATE USER
             user = userImpl.addUser(this, userName);
+            // START GAME
             Intent intentQuizActivity = new Intent(MainActivity.this, QuizActivity.class);
             startActivityForResult(intentQuizActivity, REQUEST_CODE);
         }
     }
 
     public void displayScores() {
-        IUser userImpl = new UserImpl();
+        // GET ALL USERS BY SCORE
         List<User> userList = userImpl.getAllUsers(this);
 
         StringBuilder sb = new StringBuilder();
-
         userList.forEach(currentUser -> {
             sb.append(currentUser.getName()).append(" - ");
             sb.append(currentUser.getScore()).append("\n");
@@ -126,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements IConst {
     }
 
     public void onClickResetScores(View view) {
-        IUser userImpl = new UserImpl();
+        // CLEAN DATABASE
         userImpl.cleanDB(MainActivity.this);
         displayScores();
     }
@@ -135,10 +134,11 @@ public class MainActivity extends AppCompatActivity implements IConst {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // BACK FROM QuizActivity
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             int score = data.getIntExtra(EXTRA_SCORE_PARAM, 0);
 
-            IUser userImpl = new UserImpl();
+            // UPDATE USER
             userImpl.updateScore(this, score, user.getId());
         }
     }

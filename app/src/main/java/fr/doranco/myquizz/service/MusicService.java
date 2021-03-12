@@ -5,22 +5,18 @@ import android.content.Intent;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.os.IBinder;
-import android.widget.Toast;
 
 import java.io.IOException;
 
 public class MusicService extends Service {
-    private static final String TAG = MusicService.class.getSimpleName();
+    // Song
     private static final String RAW_SONG = "living_room";
-
     private MediaPlayer mediaPlayer;
-
-    public MusicService() { }
 
     @Override
     public void onCreate() {
         super.onCreate();
-
+        // Init
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioAttributes(
                 new AudioAttributes.Builder()
@@ -42,6 +38,7 @@ public class MusicService extends Service {
             e.printStackTrace();
         }
 
+        // Wait for song preparation before start...
         mediaPlayer.setOnPreparedListener(mp -> {
             doStart();
         });

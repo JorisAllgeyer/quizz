@@ -8,4 +8,5 @@ public interface IConst {
 
     String STATE_SCORE = "STATE_SCORE";
     String STATE_QUESTION = "STATE_QUESTION";
+    String STATE_CURRENT_QUESTION = "STATE_CURRENT_QUESTION";
 }

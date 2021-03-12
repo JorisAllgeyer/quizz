@@ -38,12 +38,17 @@ public class QuizActivity extends AppCompatActivity implements IConst, View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quizz);
 
+        questionBank = QuestionBank.generateQuestions();
+        maxQuestions = 4;
+
         if (savedInstanceState != null) {
             score = savedInstanceState.getInt(STATE_SCORE);
             questionAsked = savedInstanceState.getInt(STATE_QUESTION);
+            currentQuestion = (Question) savedInstanceState.getSerializable(STATE_CURRENT_QUESTION);
         } else {
             score = 0;
             questionAsked = 4;
+            currentQuestion = questionBank.getNextQuestion();
         }
 
         tvQuestion = findViewById(R.id.tvQuestion);
@@ -51,9 +56,6 @@ public class QuizActivity extends AppCompatActivity implements IConst, View.OnCl
         btnAnswer2 = findViewById(R.id.btnA2);
         btnAnswer3 = findViewById(R.id.btnA3);
         btnAnswer4 = findViewById(R.id.btnA4);
-
-        questionBank = generateQuestions();
-        maxQuestions = 4;
 
         // Listeners
         btnAnswer1.setTag(0);
@@ -65,7 +67,6 @@ public class QuizActivity extends AppCompatActivity implements IConst, View.OnCl
         btnAnswer3.setOnClickListener(this);
         btnAnswer4.setOnClickListener(this);
 
-        currentQuestion = questionBank.getNextQuestion();
         this.displayCurrentQuestion(currentQuestion);
     }
 
@@ -125,29 +126,8 @@ public class QuizActivity extends AppCompatActivity implements IConst, View.OnCl
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt(STATE_SCORE, score);
         outState.putInt(STATE_QUESTION, questionAsked);
+        outState.putSerializable(STATE_CURRENT_QUESTION, currentQuestion);
         super.onSaveInstanceState(outState);
-    }
-
-    private QuestionBank generateQuestions() {
-        Question question1 = new Question("Quel est le pays le plus peuplé du monde ?",
-                Arrays.asList("USA", "Chine", "Inde", "Indonésie"),1);
-
-        Question question2 = new Question("Combien y'à-t-il de Pays dans l'UE ?",
-                Arrays.asList("15", "24", "27", "32"),2);
-
-        Question question3 = new Question("Quel est le créateur du système Android ?",
-                Arrays.asList("Jake Wharton", "Steve Wozmiak", "Paul Smith", "Andy Rubin"),3);
-
-        Question question4 = new Question("Quel est le premier président de la 4e République Française ?",
-                Arrays.asList("Vicent Auriol", "René Coty", "Albert Lebrun", "Paul Doumer"),0);
-
-        Question question5 = new Question("Quel est la plus petite République du Monde ?",
-                Arrays.asList("Nauru", "Monaco", "Les Palaos", "Les Tuvalu"),0);
-
-        Question question6 = new Question("Quelle est la langue la moins parlée au monde ?",
-                Arrays.asList("L'artchi", "Le Silbo", "Rotokas", "le Piraha"),0);
-
-        return new QuestionBank(Arrays.asList(question1, question2, question3, question4, question5, question6));
     }
 
 }

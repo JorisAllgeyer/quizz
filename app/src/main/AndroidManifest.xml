@@ -18,6 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:authorities="fr.doranco.myquizz.model.UserProvider"
+            android:name="fr.doranco.myquizz.model.UserProvider"/>
     </application>
-
 </manifest>

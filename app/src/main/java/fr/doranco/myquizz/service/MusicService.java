@@ -27,35 +27,36 @@ public class MusicService extends Service {
                         .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build());
     }
 
+    public void doStart() {
+        if (mediaPlayer.isPlaying()) return;
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        System.out.println("__________________ onStartCommand SERVICE");
 
         try {
             MediaPlayerUtils.selectSong(MusicService.this, mediaPlayer, RAW_SONG);
-
         } catch (IOException e) {
-
             e.printStackTrace();
-            Toast.makeText(MusicService.this,
-                    "Erreur lors de la lecture de la chanson", Toast.LENGTH_LONG).show();
         }
 
-        mediaPlayer.setLooping(true);
-        mediaPlayer.start();
+        mediaPlayer.setOnPreparedListener(mp -> {
+            doStart();
+        });
+
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        System.out.println("__________________ onDestroy SERVICE");
         super.onDestroy();
         mediaPlayer.stop();
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        System.out.println("__________________ onDestroy SERVICE");
         return null;
     }
 }
